@@ -35,6 +35,25 @@ jobs:
         with:
           node-version-file: .nvmrc
 
+      - name: Install PostgreSQL
+        uses: Harmon758/postgresql-action@v1.0.0
+        with:
+          postgresql version: ${{ env.POSTGRESQL_VERSION }}
+          postgresql db: ${{ env.DB_NAME }}
+          postgresql user: ${{ env.DB_USER }}
+          postgresql password: ${{ env.DB_PASSWORD }}
+
+      - name: Check connection str
+        run: |
+          echo "postgres://${{ env.DB_USER }}:${{ env.DB_PASSWORD }}@${{ env.DB_HOST }}:5432/${{ env.DB_NAME }}"
+
+
+      - name: Restore Backup PostgreSQL
+        uses: tj-actions/pg-restore@v4.5
+        with:
+          database_url: postgres://${{ env.DB_USER }}:${{ env.DB_PASSWORD }}@${{ env.DB_HOST }}:5432/${{ env.DB_NAME }}
+          backup_file: ./schema.sql
+
       - name: Install Dependencies
         run: |
           npm i
@@ -44,20 +63,6 @@ jobs:
         run: |
           npm i
           npx playwright install --with-deps
-
-      - name: Install PostgreSQL
-        uses: Harmon758/postgresql-action@v1.0.0
-        with:
-          postgresql version: ${{ env.POSTGRESQL_VERSION }}
-          postgresql db: ${{ env.DB_NAME }}
-          postgresql user: ${{ env.DB_USER }}
-          postgresql password: ${{ env.DB_PASSWORD }}
-
-      - name: Restore Backup PostgreSQL
-        uses: tj-actions/pg-restore@v4.5
-        with:
-          database_url: postgres://${{ env.DB_USER }}:${{ env.DB_PASSWORD }}@${{ env.DB_HOST }}:5432/${{ env.DB_NAME }}
-          backup_file: ./schema.sql
 
       - name: Start Application
         run: |
