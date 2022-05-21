@@ -5,7 +5,7 @@ env:
   APP_URL: http://localhost:3000
   # DB
   POSTGRESQL_VERSION: 14.2
-  DB_NAME: db
+  DB_NAME: e2edb
   DB_USER: postgres
   DB_PASSWORD: 12345
   DB_HOST: localhost
@@ -45,13 +45,19 @@ jobs:
           npm i
           npx playwright install --with-deps
 
-      - name: Setup PostgreSQL v${{ env.POSTGRESQL_VERSION }}
+      - name: Install PostgreSQL
         uses: Harmon758/postgresql-action@v1.0.0
         with:
           postgresql version: ${{ env.POSTGRESQL_VERSION }}
           postgresql db: ${{ env.DB_NAME }}
           postgresql user: ${{ env.DB_USER }}
           postgresql password: ${{ env.DB_PASSWORD }}
+
+      - name: Restore Backup PostgreSQL
+        uses: tj-actions/pg-restore@v4.5
+        with:
+          database_url: postgres://${{ env.DB_USER }}:${{ env.DB_PASSWORD }}@${{ env.DB_HOST }}:5432/${{ env.DB_NAME }}
+          backup_file: ./schema.sql
 
       - name: Start Application
         run: |
