@@ -1,5 +1,16 @@
 name: Continuous Integration. E2E
 
+env:
+  # APP
+  APP_URL: http://localhost:3000
+  # DB
+  POSTGRESQL_VERSION: 14.2
+  DB_NAME: db
+  DB_USER: postgres
+  DB_PASSWORD: 12345
+  DB_HOST: localhost
+
+
 on:
   pull_request:
     branches:
@@ -34,9 +45,17 @@ jobs:
           npm i
           npx playwright install --with-deps
 
+      - name: Setup PostgreSQL v${{ env.POSTGRESQL_VERSION }}
+        uses: Harmon758/postgresql-action@v1.0.0
+        with:
+          postgresql version: ${{ env.POSTGRESQL_VERSION }}
+          postgresql db: ${{ env.DB_NAME }}
+          postgresql user: ${{ env.DB_USER }}
+          postgresql password: ${{ env.DB_PASSWORD }}
+
       - name: Start Application
         run: |
-          npm start & npx wait-on http://localhost:3000
+          npm start & npx wait-on ${{ env.APP_URL }}
 
       - name: E2E
         working-directory: ./tests
