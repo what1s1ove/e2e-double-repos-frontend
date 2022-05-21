@@ -44,9 +44,10 @@ jobs:
           postgresql password: ${{ env.DB_PASSWORD }}
 
       - name: Restore Backup PostgreSQL
-        run: |
-          ls
-          psql ${{ env.DB_NAME }} < schema.sql
+        uses: tj-actions/pg-restore@v4.5
+        with:
+          database_url: postgres://${{ env.DB_USER }}:${{ env.DB_PASSWORD }}@${{ env.DB_HOST }}:5432/${{ env.DB_NAME }}
+          backup_file: ./schema.sql
 
       - name: Install Dependencies
         run: |
