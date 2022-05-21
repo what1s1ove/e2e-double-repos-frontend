@@ -43,13 +43,9 @@ jobs:
           postgresql user: ${{ env.DB_USER }}
           postgresql password: ${{ env.DB_PASSWORD }}
 
-      - name: Check connection str
-        run: |
-          echo "postgres://${{ env.DB_USER }}:${{ env.DB_PASSWORD }}@${{ env.DB_HOST }}:5432/${{ env.DB_NAME }}"
-
-
       - name: Restore Backup PostgreSQL
         run: |
+          ls
           psql ${{ env.DB_NAME }} < schema.sql
 
       - name: Install Dependencies
