@@ -23,7 +23,7 @@ jobs:
 
     services:
       postgres:
-        image: postgres:12
+        image: postgres:14
         env:
           POSTGRES_USER: ${{ env.DB_USER }}
           POSTGRES_PASSWORD: ${{ env.DB_PASSWORD }}
@@ -37,24 +37,23 @@ jobs:
           - 5432:5432
 
     steps:
+      - name: Check PG v
+        run: |
+          psql -V
+
       - name: Code Checkout
         uses: actions/checkout@v2
 
-      # - name: Tests Code Checkout
-      #   uses: actions/checkout@v2
-      #   with:
-      #     repository: what1s1ove/e2e-double-repos-playwright
-      #     path: ./tests
+      - name: Tests Code Checkout
+        uses: actions/checkout@v2
+        with:
+          repository: what1s1ove/e2e-double-repos-playwright
+          path: ./tests
 
-      # - name: Install NodeJS
-      #   uses: actions/setup-node@v2
-      #   with:
-      #     node-version-file: .nvmrc
-
-      - name: Check LS
-        run: |
-          ls
-          psql -V
+      - name: Install NodeJS
+        uses: actions/setup-node@v2
+        with:
+          node-version-file: .nvmrc
 
       - name: Restore Backup PostgreSQL
         uses: tj-actions/pg-restore@v4.5
