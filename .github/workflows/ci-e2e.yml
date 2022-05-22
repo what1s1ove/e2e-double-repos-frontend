@@ -46,7 +46,7 @@ jobs:
           postgresql db: ${{ env.DB_NAME }}
           postgresql user: ${{ env.DB_USER }}
           postgresql password: ${{ env.DB_PASSWORD }}
-          postgresql init scripts: ./schema.sql
+          postgresql init scripts: schema.sql
 
       # - name: Restore Backup PostgreSQL
       #   uses: tj-actions/pg-restore@v4.5
