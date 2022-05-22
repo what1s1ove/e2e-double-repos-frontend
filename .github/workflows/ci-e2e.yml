@@ -4,7 +4,7 @@ env:
   # APP
   APP_URL: http://localhost:3000
   # DB
-  POSTGRESQL_VERSION: 14.1
+  POSTGRESQL_VERSION: 12
   DB_PORT: 5432
   DB_NAME: e2edb
   DB_USER: postgres
@@ -24,7 +24,7 @@ jobs:
 
     services:
       postgres:
-        image: postgres:12
+        image: postgres:${{ env.POSTGRESQL_VERSION }}
         env:
           POSTGRES_USER: ${{ env.DB_USER }}
           POSTGRES_PASSWORD: ${{ env.DB_PASSWORD }}
@@ -35,7 +35,7 @@ jobs:
           --health-timeout 5s
           --health-retries 5
         ports:
-          - 5432:5432
+          - ${{ env.DB_PORT }}
 
     steps:
       - name: Code Checkout
