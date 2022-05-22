@@ -51,7 +51,7 @@ jobs:
       - name: Restore Backup PostgreSQL
         uses: tj-actions/pg-restore@v4.5
         with:
-          database_url: postgres://postgres:12345@$localhost:5432/e2edb
+          database_url: postgres://postgres:12345@$localhost/e2edb
           backup_file: ./schema.sql
 
       - name: Install Dependencies
