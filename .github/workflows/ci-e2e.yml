@@ -35,15 +35,15 @@ jobs:
       #   with:
       #     node-version-file: .nvmrc
 
-      - name: Install PostgreSQL
-        uses: CasperWA/postgresql-action@v1.2
-        with:
-          postgresql version: '12.2'
-          postgresql user: "test"
-          postgresql db: "test"
-          postgresql password: "password"
-          postgresql auth: trust
-          postgresql port: 5432
+      # - name: Install PostgreSQL
+      #   uses: CasperWA/postgresql-action@v1.2
+      #   with:
+      #     postgresql version: '12.2'
+      #     postgresql user: "test"
+      #     postgresql db: "test"
+      #     postgresql password: "password"
+      #     postgresql auth: trust
+      #     postgresql port: 5432
 
       - name: Check LS
         run: |
