@@ -34,7 +34,7 @@ jobs:
           --health-timeout 5s
           --health-retries 5
         ports:
-          - ${{ env.DB_PORT }}:${{ env.DB_PORT }}
+          - 5432:5432
 
     steps:
       - name: Code Checkout
@@ -53,12 +53,13 @@ jobs:
 
       - name: Check LS
         run: |
+          ls
           psql -V
 
       - name: Restore Backup PostgreSQL
         uses: tj-actions/pg-restore@v4.5
         with:
-          database_url: postgres://${{ env.DB_USER }}:${{ env.DB_PASSWORD }}@${{ env.DB_HOST }}:${{ env.DB_PORT }}/${{ env.DB_NAME }}
+          database_url: postgres://${{ env.DB_USER }}:${{ env.DB_PASSWORD }}@${{ env.DB_HOST }}:5432/${{ env.DB_NAME }}
           backup_file: ./schema.sql
 
       - name: Install Dependencies
