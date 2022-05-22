@@ -21,24 +21,25 @@ jobs:
   ci:
     runs-on: ubuntu-latest
     steps:
-      - name: Code Checkout
-        uses: actions/checkout@v2
+      # - name: Code Checkout
+      #   uses: actions/checkout@v2
 
-      - name: Tests Code Checkout
-        uses: actions/checkout@v2
-        with:
-          repository: what1s1ove/e2e-double-repos-playwright
-          path: ./tests
+      # - name: Tests Code Checkout
+      #   uses: actions/checkout@v2
+      #   with:
+      #     repository: what1s1ove/e2e-double-repos-playwright
+      #     path: ./tests
 
-      - name: Install NodeJS
-        uses: actions/setup-node@v2
-        with:
-          node-version-file: .nvmrc
+      # - name: Install NodeJS
+      #   uses: actions/setup-node@v2
+      #   with:
+      #     node-version-file: .nvmrc
 
       - name: Install PostgreSQL
         uses: Harmon758/postgresql-action@v1
         with:
           postgresql version: '12.2'
+          postgresql db: test
           postgresql user: test
           postgresql password: password
 
@@ -50,7 +51,7 @@ jobs:
       - name: Restore Backup PostgreSQL
         uses: tj-actions/pg-restore@v4.5
         with:
-          database_url: postgres://test:password@localhost/test
+          database_url: postgres://test:password@localhost:5432/test
           backup_file: ./schema.sql
 
       - name: Install Dependencies
