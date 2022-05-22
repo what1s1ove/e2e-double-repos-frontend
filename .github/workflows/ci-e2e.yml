@@ -36,7 +36,7 @@ jobs:
           node-version-file: .nvmrc
 
       - name: Install PostgreSQL
-        uses: danielweller-swp/postgresql-action@v2
+        uses: Harmon758/postgresql-action@v1
         with:
           postgresql version: ${{ env.POSTGRESQL_VERSION }}
           postgresql db: ${{ env.DB_NAME }}
