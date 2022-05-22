@@ -35,10 +35,6 @@ jobs:
         with:
           node-version-file: .nvmrc
 
-      - name: Check LS
-        run: |
-          ls
-
       - name: Install PostgreSQL
         uses: danielweller-swp/postgresql-action@v2
         with:
@@ -46,6 +42,11 @@ jobs:
           postgresql db: ${{ env.DB_NAME }}
           postgresql user: ${{ env.DB_USER }}
           postgresql password: ${{ env.DB_PASSWORD }}
+
+      - name: Check LS
+        run: |
+          ls
+          psql -V
 
       - name: Restore Backup PostgreSQL
         uses: tj-actions/pg-restore@v4.5
