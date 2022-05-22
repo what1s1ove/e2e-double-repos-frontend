@@ -38,7 +38,7 @@ jobs:
       - name: Install PostgreSQL
         uses: Harmon758/postgresql-action@v1
         with:
-          postgresql version: ${{ env.POSTGRESQL_VERSION }}
+          postgresql version: '12.2'
           postgresql user: test
           postgresql password: password
 
