@@ -43,6 +43,7 @@ jobs:
           postgresql db: "test"
           postgresql password: "password"
           postgresql auth: trust
+          postgresql port: 5432
 
       - name: Check LS
         run: |
