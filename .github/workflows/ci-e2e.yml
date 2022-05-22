@@ -4,7 +4,7 @@ env:
   # APP
   APP_URL: http://localhost:3000
   # DB
-  POSTGRESQL_VERSION: 14.2
+  POSTGRESQL_VERSION: 13
   DB_NAME: e2edb
   DB_USER: postgres
   DB_PASSWORD: 12345
@@ -51,7 +51,7 @@ jobs:
       - name: Restore Backup PostgreSQL
         uses: tj-actions/pg-restore@v4.5
         with:
-          database_url: postgres://postgres:12345@$localhost/e2edb
+          database_url: postgres://postgres:12345@localhost/e2edb
           backup_file: ./schema.sql
 
       - name: Install Dependencies
