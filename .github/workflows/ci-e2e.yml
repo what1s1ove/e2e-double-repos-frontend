@@ -39,9 +39,8 @@ jobs:
         uses: Harmon758/postgresql-action@v1
         with:
           postgresql version: ${{ env.POSTGRESQL_VERSION }}
-          postgresql db: ${{ env.DB_NAME }}
-          postgresql user: ${{ env.DB_USER }}
-          postgresql password: ${{ env.DB_PASSWORD }}
+          postgresql user: test
+          postgresql password: password
 
       - name: Check LS
         run: |
@@ -51,7 +50,7 @@ jobs:
       - name: Restore Backup PostgreSQL
         uses: tj-actions/pg-restore@v4.5
         with:
-          database_url: postgres://postgres:12345@localhost/e2edb
+          database_url: postgres://test:password@localhost/test
           backup_file: ./schema.sql
 
       - name: Install Dependencies
