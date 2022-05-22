@@ -4,6 +4,7 @@ env:
   # APP
   APP_URL: http://localhost:3000
   # DB
+  DB_PORT: 5432
   DB_NAME: e2edb
   DB_USER: postgres
   DB_PASSWORD: 12345
@@ -58,7 +59,7 @@ jobs:
       - name: Restore Backup PostgreSQL
         uses: tj-actions/pg-restore@v4.5
         with:
-          database_url: postgres://${{ env.DB_USER }}:${{ env.DB_PASSWORD }}@${{ env.DB_HOST }}/${{ env.DB_NAME }}
+          database_url: postgres://${{ env.DB_USER }}:${{ env.DB_PASSWORD }}@${{ env.DB_HOST }}:${{ env.DB_PORT }}/${{ env.DB_NAME }}
           backup_file: ./schema.sql
 
       - name: Install Dependencies
