@@ -4,7 +4,7 @@ env:
   # APP
   APP_URL: http://localhost:3000
   # DB
-  POSTGRESQL_VERSION: 13
+  POSTGRESQL_VERSION: '12'
   DB_NAME: e2edb
   DB_USER: postgres
   DB_PASSWORD: 12345
