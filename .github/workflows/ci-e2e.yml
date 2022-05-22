@@ -47,7 +47,7 @@ jobs:
         run: |
           ls
           psql -V
-          psql -V test
+          psql -U test
 
       - name: Restore Backup PostgreSQL
         uses: tj-actions/pg-restore@v4.5
