@@ -37,10 +37,6 @@ jobs:
           - 5432:5432
 
     steps:
-      - name: Check PG v
-        run: |
-          psql -V
-
       - name: Code Checkout
         uses: actions/checkout@v2
 
