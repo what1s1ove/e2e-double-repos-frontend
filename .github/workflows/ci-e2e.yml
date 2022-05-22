@@ -39,20 +39,21 @@ jobs:
         uses: Harmon758/postgresql-action@v1
         with:
           postgresql version: '12.2'
-          postgresql user: test
-          postgresql db: test
-          postgresql password: password
+          postgresql user: "test"
+          postgresql db: "test"
+          postgresql password: "password"
 
       - name: Check LS
         run: |
           ls
           psql -V
+          psql -V test
 
       - name: Restore Backup PostgreSQL
         uses: tj-actions/pg-restore@v4.5
         with:
-          database_url: postgres://test:password@localhost:5432/test
-          backup_file: ./schema.sql
+          database_url: "postgres://test:password@localhost:5432/test"
+          backup_file: "./schema.sql"
 
       - name: Install Dependencies
         run: |
