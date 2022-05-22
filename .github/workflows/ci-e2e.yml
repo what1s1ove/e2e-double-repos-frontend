@@ -4,8 +4,6 @@ env:
   # APP
   APP_URL: http://localhost:3000
   # DB
-  POSTGRESQL_VERSION: 12
-  DB_PORT: 5432
   DB_NAME: e2edb
   DB_USER: postgres
   DB_PASSWORD: 12345
@@ -24,7 +22,7 @@ jobs:
 
     services:
       postgres:
-        image: postgres:${{ env.POSTGRESQL_VERSION }}
+        image: postgres:12
         env:
           POSTGRES_USER: ${{ env.DB_USER }}
           POSTGRES_PASSWORD: ${{ env.DB_PASSWORD }}
@@ -35,7 +33,7 @@ jobs:
           --health-timeout 5s
           --health-retries 5
         ports:
-          - ${{ env.DB_PORT }}
+          - 5432
 
     steps:
       - name: Code Checkout
@@ -60,7 +58,7 @@ jobs:
       - name: Restore Backup PostgreSQL
         uses: tj-actions/pg-restore@v4.5
         with:
-          database_url: postgres://${{ env.DB_USER }}:${{ env.DB_PASSWORD }}@${{ env.DB_HOST }}:${{ env.DB_PORT }}/${{ env.DB_NAME }}
+          database_url: postgres://${{ env.DB_USER }}:${{ env.DB_PASSWORD }}@${{ env.DB_HOST }}/${{ env.DB_NAME }}
           backup_file: ./schema.sql
 
       - name: Install Dependencies
