@@ -1,5 +1,16 @@
 name: Continuous Integration. E2E
 
+env:
+  # APP
+  APP_URL: http://localhost:3000
+  # DB
+  DB_PORT: 5432
+  DB_NAME: e2edb
+  DB_USER: postgres
+  DB_PASSWORD: 12345
+  DB_HOST: localhost
+
+
 on:
   pull_request:
     branches:
@@ -9,23 +20,58 @@ on:
 jobs:
   ci:
     runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:14
+        env:
+          POSTGRES_USER: ${{ env.DB_USER }}
+          POSTGRES_PASSWORD: ${{ env.DB_PASSWORD }}
+          POSTGRES_DB: ${{ env.DB_NAME }}
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
     steps:
       - name: Code Checkout
         uses: actions/checkout@v2
+
+      - name: Tests Code Checkout
+        uses: actions/checkout@v2
+        with:
+          repository: what1s1ove/e2e-double-repos-playwright
+          path: ./tests
 
       - name: Install NodeJS
         uses: actions/setup-node@v2
         with:
           node-version-file: .nvmrc
 
+      - name: Restore Backup PostgreSQL
+        uses: tj-actions/pg-restore@v4.5
+        with:
+          database_url: postgres://${{ env.DB_USER }}:${{ env.DB_PASSWORD }}@${{ env.DB_HOST }}:5432/${{ env.DB_NAME }}
+          backup_file: ./schema.sql
+
       - name: Install Dependencies
         run: |
-          npm run install:all
+          npm i
 
-      - name: Install Playwright Browsers
+      - name: Tests Install Dependencies
         working-directory: ./tests
-        run: npx playwright install --with-deps
+        run: |
+          npm i
+          npx playwright install --with-deps
+
+      - name: Start Application
+        run: |
+          npm start & npx wait-on ${{ env.APP_URL }}
 
       - name: E2E
+        working-directory: ./tests
         run: |
           npm run test
